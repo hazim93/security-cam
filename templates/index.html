@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Camera Feed</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .video-container {
+            margin: 20px 0;
+        }
+        img {
+            max-width: 100%;
+            border: 2px solid #333;
+            border-radius: 5px;
+        }
+        .info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Security Camera Live Feed</h1>
+        <div class="video-container">
+            <img src="{{ url_for('video_feed') }}" alt="Camera Feed">
+        </div>
+        <div class="info">
+            <p>Detecting security-relevant objects: person, bicycle, car, motorcycle, bus, truck, cat, dog</p>
+            <p>Press Ctrl+C in terminal to stop the server</p>
+        </div>
+    </div>
+</body>
+</html>
