@@ -9,6 +9,34 @@
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
         }
+        .events-container {
+            margin: 20px auto;
+            max-width: 800px;
+            background-color: white;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .event-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+        .event-time {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .event-objects {
+            margin-top: 5px;
+        }
+        .object-tag {
+            display: inline-block;
+            background-color: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin: 2px;
+            font-size: 0.9em;
+        }
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -43,6 +71,39 @@
             <p>Detecting security-relevant objects: person, bicycle, car, motorcycle, bus, truck, cat, dog</p>
             <p>Press Ctrl+C in terminal to stop the server</p>
         </div>
+        <div class="events-container">
+            <h2>Recent Events</h2>
+            <div id="events-list"></div>
+        </div>
     </div>
+
+    <script>
+        function formatDate(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleString();
+        }
+
+        function updateEvents() {
+            fetch('/events')
+                .then(response => response.json())
+                .then(events => {
+                    const eventsList = document.getElementById('events-list');
+                    eventsList.innerHTML = events.map(event => `
+                        <div class="event-item">
+                            <div class="event-time">${formatDate(event.timestamp)}</div>
+                            <div class="event-objects">
+                                Objects detected: ${event.objects_detected.map(obj => `
+                                    <span class="object-tag">${obj.class} (${Math.round(parseFloat(obj.confidence) * 100)}% confidence)</span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('');
+                });
+        }
+
+        // Update events every 5 seconds
+        updateEvents();
+        setInterval(updateEvents, 5000);
+    </script>
 </body>
 </html>

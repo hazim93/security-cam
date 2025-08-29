@@ -12,3 +12,4 @@ wheels/
 # Others
 uv.lock
 yolo*.pt
+security_events.json
