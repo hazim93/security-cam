@@ -2,6 +2,18 @@ import cv2
 from ultralytics import YOLO
 
 def main():
+    # Define security-relevant classes (based on COCO dataset class indices)
+    security_class_names = {
+        0: 'person',
+        1: 'bicycle',
+        2: 'car',
+        3: 'motorcycle',
+        5: 'bus',
+        7: 'truck',
+        15: 'cat',
+        16: 'dog'
+    }
+    
     # Initialize the webcam (0 is usually the default camera)
     cap = cv2.VideoCapture(0)
     
@@ -22,6 +34,7 @@ def main():
         return
     
     print("Webcam live feed with object detection started. Press 'q' to quit.")
+    print("Detecting only security-relevant objects:", list(security_class_names.values()))
     
     try:
         while True:
@@ -33,9 +46,9 @@ def main():
                 print("Error: Can't receive frame (stream end?). Exiting ...")
                 break
             
-            # Run YOLO object detection on the frame
+            # Run YOLO object detection on the frame with filtered classes
             try:
-                results = model(frame)
+                results = model(frame, classes=list(security_class_names.keys()))
                 
                 # Plot the results on the frame
                 annotated_frame = results[0].plot()
